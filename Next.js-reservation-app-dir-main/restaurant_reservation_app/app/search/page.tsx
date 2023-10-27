@@ -1,7 +1,7 @@
 import Header from "./components/Header";
 import SearchSideBar from "./components/SearchSideBar";
 import RestaurantCard from "./components/RestaurantCard";
-import { PrismaClient } from "@prisma/client";
+import { Cuisine, PRICE, PrismaClient  } from "@prisma/client";
 
 
 export async function generateMetadata() {
@@ -16,7 +16,11 @@ export async function generateMetadata() {
 
 const prisma = new PrismaClient();
 
-const fetchRestaurantsByCity =async (city : string | undefined ) => {
+const fetchRestaurantsByCity =async (searchParams: {
+  city?: string | undefined;
+  cuisine?: string | undefined;
+  price?: PRICE | undefined;
+}) => {
   
   const select = {
     id : true ,
@@ -26,16 +30,26 @@ const fetchRestaurantsByCity =async (city : string | undefined ) => {
     cuisine : true ,
     location : true ,
     slug :true ,
+    reviews : true
   }
   
-  if(!city) return prisma.restaurant.findMany({select}) ;
-  return prisma.restaurant.findMany({
+   if(!searchParams.city) return prisma.restaurant.findMany({select}) ;
+  
+   return prisma.restaurant.findMany({
     where : {
       location : {
         name : {
-          equals : city.toLowerCase(),
+          equals : searchParams.city.toLowerCase(),
         },
       },
+      cuisine : {
+        name : {
+          equals : searchParams.cuisine 
+        }
+      },
+      price : {
+          equals : searchParams.price 
+      }
     },
     select
   })
@@ -54,18 +68,19 @@ const fetchCuisine = async()=>{
  
 
 
-const Search = async({searchParams} :{searchParams : {city : string}}) => {
-    
+    const Search = async({searchParams} :{searchParams : {city ?: string, cuisine?: string , price?:PRICE}}) => {
+
      const cuisine = await fetchCuisine() ;
      const location = await fetchLocation();
-    const restaurants = await fetchRestaurantsByCity(searchParams.city) ; 
- 
+    const restaurants = await fetchRestaurantsByCity(searchParams) ; 
+
+   console.log(searchParams);
     
     return (
                    <>       
       <Header />
       <div className='flex py-4 m-auto w-2/3 justify-between items-start'> 
-         <SearchSideBar cuisine = {cuisine}  location= {location}/>
+         <SearchSideBar cuisine = {cuisine} searchParams={searchParams}  location= {location}/>
        <div className='w-5/6'>
         {restaurants.length ?( <>  {
       restaurants.map((restaurant) =>(

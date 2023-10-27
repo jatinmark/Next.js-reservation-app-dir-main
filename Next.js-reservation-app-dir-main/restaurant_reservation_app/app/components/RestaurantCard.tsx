@@ -2,11 +2,13 @@ import Link from "next/link";
 import { RestaurantCardType } from "../page";
 import Price from "./Price";
 
+
 interface Props {
   restaurant : RestaurantCardType ;
 }
 
-const RestaurantCard = ({restaurant}:Props) => { 
+const RestaurantCard = async({restaurant}:Props) => { 
+
     return (
         <>
         <Link href={`/restaurant/${restaurant.slug}`}>
@@ -20,7 +22,9 @@ const RestaurantCard = ({restaurant}:Props) => {
              </h3>
              <div className='flex item-start'>
               <div className='flex- mb-2'>*****   </div>
-              <p className='ml-2'>77 reviews</p>
+              <p className='ml-2'>
+                {restaurant.reviews.length} review{restaurant.reviews.length >= 2 ? "s" : '' }
+                 </p>
              </div>
              <div className='flex text-reg font-light capitalize'>
               <p className='mr-3'>{restaurant.cuisine.name}</p>

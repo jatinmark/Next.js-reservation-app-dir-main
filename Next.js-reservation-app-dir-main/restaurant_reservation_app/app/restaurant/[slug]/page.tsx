@@ -6,7 +6,7 @@ import Description from "./component/Description";
 import Images from "./component/Images";
 import Reviews from "./component/Reviews";
 import ReservationCard from "./component/ResarvationCard";
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, Review } from "@prisma/client";
 export async function generateMetadata() {
 	return {
 		title: 'Milestones Grill (Toronto) | BookMyDining',
@@ -21,6 +21,7 @@ interface Restaurant  {
   slug: string;
   images: string[];
   description: string;
+  reviews : Review[] ;
   
 } 
 
@@ -34,7 +35,8 @@ const fetchRestaurantBySlug =async (slug:string):Promise<Restaurant> => {
       name : true ,
       images : true ,
       description : true ,
-      slug : true 
+      slug : true ,
+      reviews : true 
 
     }
   });
@@ -48,6 +50,7 @@ const RestaurantDetailPage = async({params}:{params : {slug : string}}) => {
  
   const restaurant = await fetchRestaurantBySlug(params.slug) ;
 
+
   return ( 
      <>
     
@@ -55,10 +58,10 @@ const RestaurantDetailPage = async({params}:{params : {slug : string}}) => {
         <div className='bg-white w-[70%] rounded p-3 shadow'>
          <RestaurantNavBar slug ={restaurant.slug} />
            <Title name = {restaurant.name} />
-             <Rating />      
+             <Rating reviews = {restaurant.reviews} />      
                <Description description = {restaurant.description} />
                 <Images images={restaurant.images} />
-                  <Reviews />
+                  <Reviews reviews = {restaurant.reviews} />
          </div>   
       <div className='relative w-[26%] text-reg '>
         {/* -mt-14 */}
