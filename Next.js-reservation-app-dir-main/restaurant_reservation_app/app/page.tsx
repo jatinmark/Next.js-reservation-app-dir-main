@@ -8,7 +8,8 @@ export interface RestaurantCardType {
       main_image : string ;
       cuisine : Cuisine ;
       location : Location;
-      price : PRICE
+      price : PRICE ;
+      slug : string ;
 }
 
 const prisma = new PrismaClient() ;
@@ -21,7 +22,8 @@ const fetchRestaurants =async () : Promise<RestaurantCardType[]> => {
       main_image : true ,
       cuisine : true ,
       location : true ,
-      price : true 
+      price : true ,
+      slug : true
     }
   }) ;
   return restaurants ; 
@@ -31,7 +33,7 @@ export default async function Home() {
   
    const restaurants = await fetchRestaurants() ;
 
-   console.log({restaurants}) ;
+  //  console.log({restaurants}) ;
   return (
       <main>
        <Header />
@@ -48,4 +50,4 @@ export default async function Home() {
   )
 }
 
-// MqtabvcNC8ywqrUj
+// ddScRpaRlBeBhWR9
