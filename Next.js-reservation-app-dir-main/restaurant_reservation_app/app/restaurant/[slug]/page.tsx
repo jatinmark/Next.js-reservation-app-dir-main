@@ -7,6 +7,7 @@ import Images from "./component/Images";
 import Reviews from "./component/Reviews";
 import ReservationCard from "./component/ResarvationCard";
 import { PrismaClient, Review } from "@prisma/client";
+import { notFound } from "next/navigation";
 export async function generateMetadata() {
 	return {
 		title: 'Milestones Grill (Toronto) | BookMyDining',
@@ -41,7 +42,8 @@ const fetchRestaurantBySlug =async (slug:string):Promise<Restaurant> => {
     }
   });
   if(!restaurant){
-    throw new Error();
+    notFound()
+    // throw new Error("Can't Find Restaurant");
   }
   return restaurant ;
 }

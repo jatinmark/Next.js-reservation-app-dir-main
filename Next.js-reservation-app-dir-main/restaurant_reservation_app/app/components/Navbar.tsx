@@ -1,4 +1,5 @@
 import Link from "next/link";
+import AuthModel from "./AuthModal";
 
 const Navbar = () => {
 return (
@@ -7,8 +8,8 @@ return (
     </Link>
     <div>
     <div className='flex '>
-      <button  className='bg-red-600 text-white border  px-4 p-1 rounded-md mr-3'>Sign in</button>
-      <button className=' text-gray-700 border p-1 px-4 rounded-md hover:text-gray-900 mr-4 '>Sign up</button>
+            <AuthModel isSignin={true} />
+            <AuthModel isSignin={false} />
       </div>
       </div>
   </nav>

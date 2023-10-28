@@ -1,3 +1,4 @@
+"use client"
 import fullStar from "../../public/icons/full-star.png";
 import halfStar from "../../public/icons/half-star.png";
 import emptyStar from "../../public/icons/empty-star.png";
@@ -20,7 +21,7 @@ const Stars = ({
           if(difference>=1) stars.push(fullStar)
           else if(difference<1 && difference>0){
               if(difference<=0.2) stars.push(emptyStar)
-             else if(difference<=0.2 && difference<=0.6)  stars.push(halfStar)
+             else if(difference>0.2 && difference<=0.6) stars.push(halfStar)
              else stars.push(fullStar)
     } 
       else stars.push(emptyStar)  
@@ -29,10 +30,12 @@ const Stars = ({
         return stars.map(star => {
           return  (
             <Image src={star} alt="" className="w-4 h-4 mr-1" />
-        )}
+        );}
         )
      }
-    return (  <div className="flex items-center"> {renderStars()} </div>);
+    return (  <><div className="flex items-center"> {renderStars()} 
+    </div>
+    </>);
 }
  
 export default Stars;
