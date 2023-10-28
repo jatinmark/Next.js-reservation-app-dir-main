@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { RestaurantCardType } from "../page";
 import Price from "./Price";
+import Stars from "./Stars";
 
 
 interface Props {
@@ -21,7 +22,7 @@ const RestaurantCard = async({restaurant}:Props) => {
               {restaurant.name}
              </h3>
              <div className='flex item-start'>
-              <div className='flex- mb-2'>*****   </div>
+              <Stars reviews={restaurant.reviews} />
               <p className='ml-2'>
                 {restaurant.reviews.length} review{restaurant.reviews.length >= 2 ? "s" : '' }
                  </p>
