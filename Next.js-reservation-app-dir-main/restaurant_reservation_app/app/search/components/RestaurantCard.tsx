@@ -13,7 +13,6 @@ interface Restaurant {
   cuisine: Cuisine;
   location: Location;
   slug: string;
-  city : string ;
   reviews : Review[] ;
 }
 
