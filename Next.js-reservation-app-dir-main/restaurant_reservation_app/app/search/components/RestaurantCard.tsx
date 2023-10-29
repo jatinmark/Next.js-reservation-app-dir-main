@@ -13,9 +13,9 @@ interface Restaurant {
   cuisine: Cuisine;
   location: Location;
   slug: string;
-  city : string ;
   reviews : Review[] ;
 }
+
 
 const RestaurantCard = ({restaurant }:{restaurant : Restaurant} ) => {
 
@@ -27,6 +27,7 @@ const RestaurantCard = ({restaurant }:{restaurant : Restaurant} ) => {
      else "" ;
     } 
 
+    
   // console.log(restaurant);
 
     return (
