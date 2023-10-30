@@ -4,10 +4,11 @@ import validator from "validator";
 import bcrypt from "bcrypt" ;
 import * as jose from "jose" ;
 
+const prisma = new PrismaClient();
+
 export default async function handler(req: NextApiRequest , res : NextApiResponse) {
 
     if(req.method === "POST"){
-    const prisma = new PrismaClient();
 
     const {firstname , lastname , email , phone ,city ,password } = req.body ;
 
@@ -51,7 +52,7 @@ export default async function handler(req: NextApiRequest , res : NextApiRespons
    })
    const userwithEmail = await prisma.user.findUnique({
     where : {
-        email  
+        email
     }
    }) ;
 
@@ -92,8 +93,8 @@ export default async function handler(req: NextApiRequest , res : NextApiRespons
    .sign(secret);   // it is a secret only know by server and developer stored in .env file 
 
    
-    res.status(200).json({
-        hello: token
+    return res.status(200).json({
+        token,
     });
 }
 return res.status(404).json("Unknown endpoint");
