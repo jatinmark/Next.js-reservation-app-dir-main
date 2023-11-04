@@ -3,7 +3,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import validator from "validator";
 import bcrypt from "bcrypt" ;
 import * as jose from "jose" ;
-
+import {setCookie} from "cookies-next" ;
 
 const prisma = new PrismaClient();
 
@@ -37,17 +37,17 @@ export default async function handler(
             return res.status(400).json({errorMessage : errors[0]})
            }
          
-    const userwithEmail =await prisma.user.findUnique({
+    const user =await prisma.user.findUnique({
         where : {
             email
         }
     });
 
-    if(!userwithEmail){
+    if(!user){
         return res.status(401).json({errorMessage : "Email or password is invalid"})
     }
 
-    const isMatch = await bcrypt.compare(password , userwithEmail.password);
+    const isMatch = await bcrypt.compare(password , user.password);
 
     if(!isMatch){
         return res.status(401).json({errorMessage : "Email or password is invalid"})
@@ -60,14 +60,19 @@ export default async function handler(
   
    const secret = new TextEncoder().encode(process.env.JWT_SECRET)
 
-   const token = await new jose.SignJWT({email : userwithEmail.email})
+   const token = await new jose.SignJWT({email : user.email})
    .setProtectedHeader({alg})
    .setExpirationTime("24h")
    .sign(secret);   // it is a secret only know by server and developer stored in .env file 
 
+   setCookie("jwt" , token ,{req , res  , maxAge : 60*6*24} ); //it saves the jwt as cookies in the client for 6 days
    
     return res.status(200).json({
-       token ,
+      firstName : user.first_name,
+      lastName : user.last_name,
+      email : user.email,
+      phone : user.phone,
+      city : user.city,
     });
     }
 

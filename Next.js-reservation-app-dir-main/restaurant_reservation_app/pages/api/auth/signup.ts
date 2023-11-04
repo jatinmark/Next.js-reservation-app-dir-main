@@ -1,8 +1,9 @@
 import { PrismaClient } from "@prisma/client";
 import { NextApiRequest , NextApiResponse } from "next";
-import validator from "validator";
+import validator from "validator" ;
 import bcrypt from "bcrypt" ;
 import * as jose from "jose" ;
+import { setCookie } from "cookies-next";
 
 const prisma = new PrismaClient();
 
@@ -10,20 +11,20 @@ export default async function handler(req: NextApiRequest , res : NextApiRespons
 
     if(req.method === "POST"){
 
-    const {firstname , lastname , email , phone ,city ,password } = req.body ;
+    const {firstName , lastName , email , phone ,city ,password } = req.body ;
 
      const errors : string[] =[
 
      ];
   const validationSchema = [
     {
-        valid : validator.isLength(firstname,{
+        valid : validator.isLength(firstName,{
         min : 1 ,
         max : 20 ,
         }),
         errorMessage : "First name is invalid"
     },  {
-        valid : validator.isLength(lastname,{
+        valid : validator.isLength(lastName,{
         min : 1 ,
         max : 20 ,
         }),
@@ -72,8 +73,8 @@ export default async function handler(req: NextApiRequest , res : NextApiRespons
 
    const user = await prisma.user.create({
     data : {
-        first_name : firstname ,
-        last_name : lastname ,
+        first_name : firstName ,
+        last_name : lastName ,
         password : hashedPassword ,
         city ,
         email,
@@ -92,9 +93,15 @@ export default async function handler(req: NextApiRequest , res : NextApiRespons
    .setExpirationTime("24h")
    .sign(secret);   // it is a secret only know by server and developer stored in .env file 
 
-   
+   setCookie("jwt" , token ,{req , res  , maxAge : 60*6*24} ); //it saves the jwt as cookies in the client for 6 days
+
+
     return res.status(200).json({
-        token,
+        firstName : user.first_name,
+        lastName : user.last_name,
+        email : user.email,
+        phone : user.phone,
+        city : user.city,
     });
 }
 return res.status(404).json("Unknown endpoint");

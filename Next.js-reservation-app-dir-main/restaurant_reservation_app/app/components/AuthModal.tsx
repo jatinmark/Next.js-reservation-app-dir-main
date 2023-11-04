@@ -1,10 +1,12 @@
 "use client"
-import {useState} from 'react';
+import {useContext, useEffect, useState} from 'react';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import AuthModalInput from './AuthModalInput';
+import useAuth from '@/hooks/useAuth';
+import { AuthenticationContext } from '../context/AuthContext';
+import CircularProgress from '@mui/material/CircularProgress';
+import Alert from '@mui/material/Alert';
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -17,11 +19,22 @@ const style = {
   p: 4,
 };
 
+
+// interface State  {
+//   firstname: string;
+//   lastname: string;
+//   email: string;
+//   phone: string;
+//   city: string;
+//   password: string;
+// }
+
 export default function AuthModel({isSignin} : {isSignin : boolean}) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
+  const {signin ,signup} = useAuth() ;
+  const {loading , error , data} = useContext(AuthenticationContext) ;
 
   const renderContent = (signinContent : string , signupContent : string) =>{
     return isSignin ? signinContent : signupContent
@@ -35,20 +48,50 @@ export default function AuthModel({isSignin} : {isSignin : boolean}) {
    }
 
   const [inputs , setInputs] = useState({
-    firstname : "",
-    lastname  : "" ,
+    firstName : "",
+    lastName  : "" ,
     email : "" ,
     phone : "" ,
     city : "" ,
     password : "" 
   })
+
+ 
+  const [disabled , setDisabled] = useState(true) ;
+
+  useEffect(() => {
+    if(isSignin){
+      if(inputs.email&&inputs.password){
+        return setDisabled(false) ;
+       }
+    }
+    else {
+      if(inputs.email 
+        && inputs.firstName 
+        && inputs.lastName 
+        && inputs.password 
+        && inputs.phone 
+        && inputs.city ){
+        return setDisabled(false)
+      }
+    }
+  } , [inputs])
+
+  const handleClick = () => {
+    if(isSignin){
+      signin({email : inputs.email , password : inputs.password} , handleClose)
+    }else {
+     signup(inputs  , handleClose)
+    }
+  }
+
   return (
     <div>
          <button 
           className={`${renderContent("bg-red-600 text-white" , "")} border  px-4 p-1 rounded-md mr-3`}
           onClick={handleOpen}
           >
-        {renderContent( "Sign in" , "Sign out")}
+        {renderContent( "Sign in" , "Sign up")}
         </button>
       <Modal
         open={open}
@@ -57,7 +100,12 @@ export default function AuthModel({isSignin} : {isSignin : boolean}) {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <div className='p-2 h-[600px]'>
+      { loading  ? <div className='py-24 px-2 h-[600px] flex justify-center'> 
+        <CircularProgress sx ={{color:"#f44336"}} />
+        </div> : <div className='p-2 h-[600px]'>
+         { error ?  <Alert severity="error" className='mb-4'>
+          {error}
+          </Alert> : null}
              <div className='uppercase font-bold text-center pb-2 border-b mb-2'>
                 <p className='text-sm'>
                   {renderContent("Sign In" ,"Create Account")}
@@ -71,8 +119,11 @@ export default function AuthModel({isSignin} : {isSignin : boolean}) {
                         "Create Your Account"
                     )
                   }
-                  <AuthModalInput isSignin = {isSignin} input = {inputs} handleChangeInput={handleChangeInput} />
-                  <button className='uppercase bg-red-600 w-full text-white p-3 rounded text-sm mb-5 disabled:bg-gray-400'>
+                  <AuthModalInput isSignin = {isSignin} input = {inputs} handleChangeInput={handleChangeInput} data={ data?.email} />
+                  <button disabled ={disabled}
+                  className='uppercase bg-red-600 w-full text-white p-3 rounded text-sm mb-5 disabled:bg-gray-400'
+                  onClick={handleClick}
+                  >
                   {
                     renderContent(
                         "Sign In" ,
@@ -82,7 +133,7 @@ export default function AuthModel({isSignin} : {isSignin : boolean}) {
                   </button>
                 </h2>
              </div>
-          </div>
+          </div>}
         </Box>
       </Modal>
     </div>
