@@ -6,8 +6,8 @@ module.exports = {
     async rewrites() {
       return [
         {
-          source: 'api/auth/signin',
-          destination: 'http://localhost:3000',
+          source: '/api/auth/signin',
+          destination: 'http://localhost:3000/api/auth/signin',
         },
       ]
     },
