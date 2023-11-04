@@ -6,7 +6,7 @@ module.exports = {
     async rewrites() {
       return [
         {
-          source: '/api/auth/signin',
+          source: 'https://reservation-app-virid.vercel.app',
           destination: 'http://localhost:3000/api/auth/signin',
         },
       ]
