@@ -2,3 +2,13 @@
 const nextConfig = {}
 
 module.exports = nextConfig
+module.exports = {
+    async rewrites() {
+      return [
+        {
+          source: 'api/auth/signin',
+          destination: 'http://localhost:3000',
+        },
+      ]
+    },
+  }
