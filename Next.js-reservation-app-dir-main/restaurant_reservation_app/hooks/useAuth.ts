@@ -15,7 +15,7 @@ import { useContext } from 'react';
         })
         
         try {
-         const response =   await axios.post("http://localhost:3000/api/auth/signin" ,{
+         const response =   await axios.post("https://reservation-app-virid.vercel.app/api/auth/signin" ,{
             email ,
             password 
         })
@@ -45,7 +45,7 @@ import { useContext } from 'react';
         })
         
         try {
-         const response =   await axios.post("http://localhost:3000/api/auth/signup" ,{
+         const response =   await axios.post("https://reservation-app-virid.vercel.app/api/auth/signup" ,{
             email ,
             password ,
             firstName , 
