@@ -71,7 +71,7 @@ const RestaurantDetailPage = async({params}:{params : {slug : string}}) => {
          </div>   
       <div className='relative w-[26%] text-reg '>
         {/* -mt-14 */}
-               <ReservationCard openTime ={restaurant.open_time} closeTime ={restaurant.close_time} />
+               <ReservationCard slug= {restaurant.slug} openTime ={restaurant.open_time} closeTime ={restaurant.close_time} />
       </div>
    
       </>
