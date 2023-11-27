@@ -26,7 +26,6 @@ export default async function handler(req : NextApiRequest, res : NextApiRespons
         return res.status(400).json
         ({errorMessage: "Invalid data provided"});
     }
-     {/* @ts-ignore */}
     const bookings = await prisma.booking.findMany({
         where :{
            booking_time : {
