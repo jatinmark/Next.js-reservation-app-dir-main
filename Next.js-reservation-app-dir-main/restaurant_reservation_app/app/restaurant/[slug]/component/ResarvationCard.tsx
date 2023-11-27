@@ -1,8 +1,9 @@
 "use client" ;
 import { partySize as partySizes , times } from "@/data/index";
 import useAvailabilities from "@/hooks/useAvailabilities";
+import { convertToDisplayTime } from "@/utils/convertToDisplayTime";
 import { CircularProgress } from "@mui/material";
-import { convertToDisplayTime } from '@/utils/convertToDisplayTime'
+// import { convertToDisplayTime } from '@/utils/convertToDisplayTime'
 import Link from "next/link";
 import { useState } from "react";
 import DatePicker from "react-datepicker" ;
@@ -90,11 +91,12 @@ const ReservationCard = ({openTime , closeTime , slug} : {openTime : string , cl
         <div className="flex flex-wrap mt-2">
           {
             data.map(time => {
-              return time.available ? <Link href={`/reserve/${slug}?date=${day}T${time.time}&partySize=${partySize}` } className="bg-red-600 cursor-pointer p-2 w-24 text-center text-white mb-3 rounded mr-3" >
+              return time.available ? (<Link href={`/reserve/${slug}?date=${day}T${time.time}&partySize=${partySize}` } className="bg-red-600 cursor-pointer p-2 w-24 text-center text-white mb-3 rounded mr-3" >
                 <p className="text-sm font-bold">
-                {convertToDisplayTime(time.time)}             
+                 {/* @ts-ignore */}
+                {convertToDisplayTime(time.time)}            
                 </p>
-              </Link> : <p className="bg-gray=300 p-2 w-24 mb-3 rounded mr-3"></p>
+              </Link>) : (<p className="bg-gray=300 p-2 w-24 mb-3 rounded mr-3"></p> ) ;
             })}
         </div>
         </div>

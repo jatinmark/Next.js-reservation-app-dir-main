@@ -51,8 +51,8 @@ const displayTimeObject = {
     "23:30:00.000Z": "11:30 PM",
   };
 
-  export type Time = keyof typeof displayTimeObject
-  
-  export  const convertToDisplayTime = (time: Time) => {
-    return displayTimeObject[time] ;
-  }
+export type Time = keyof typeof displayTimeObject
+
+export const convertToDisplayTime = (time : Time) => {
+  return displayTimeObject[time]
+}
