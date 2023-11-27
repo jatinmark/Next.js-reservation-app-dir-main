@@ -3,11 +3,9 @@ import { partySize as partySizes , times } from "@/data/index";
 import useAvailabilities from "@/hooks/useAvailabilities";
 import { convertToDisplayTime } from "@/utils/convertToDisplayTime";
 import { CircularProgress } from "@mui/material";
-// import { convertToDisplayTime } from '@/utils/convertToDisplayTime'
 import Link from "next/link";
 import { useState } from "react";
 import DatePicker from "react-datepicker" ;
-
 const ReservationCard = ({openTime , closeTime , slug} : {openTime : string , closeTime : string ,  slug : string }) => {
 
   const [selectedDate , setSelectedDate]  = useState<Date | null>(new Date())
