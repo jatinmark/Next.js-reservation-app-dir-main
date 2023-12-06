@@ -17,7 +17,7 @@ const fetchAvailabilities =async ({slug , partySize , day , time} : {slug : stri
     )
     setLoading(true)
     try {
-        const response = await axios.get(`https://reservation-app-virid.vercel.app/api/restaurant/${slug}/availability` , {
+         const response = await axios.get(`https://reservation-app-virid.vercel.app/api/restaurant/${slug}/availability` , {
             params : {
                 day , 
                 time , 
