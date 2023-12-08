@@ -94,7 +94,7 @@ const ReservationCard = ({openTime , closeTime , slug} : {openTime : string , cl
                  {/* @ts-ignore */}
                 {convertToDisplayTime(time.time)}            
                 </p>
-              </Link>) : (<p className="bg-gray=300 p-2 w-24 mb-3 rounded mr-3"></p> ) ;
+              </Link>) : (<p className="bg-[#b8b8b8] p-2 w-24 mb-3 rounded mr-3"></p> ) ;
             })}
         </div>
         </div>
